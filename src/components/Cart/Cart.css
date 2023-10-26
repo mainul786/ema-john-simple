@@ -4,3 +4,12 @@
     padding: 10px 20px;
     color: white;
 }
+.clear-cart{
+    background-color: aqua;
+    padding: 7px 10px;
+    border-radius: 10px;
+    border: none;
+    width: 100%;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
