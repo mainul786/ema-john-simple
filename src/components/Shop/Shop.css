@@ -11,3 +11,17 @@
 .cart-container{
     background-color: tomato;
 }
+.pegination{
+    margin-left:30px;
+    margin-bottom: 50px;
+}
+.pegination button{
+    margin-right: 10px;
+}
+.pegination .selected{
+    background-color: goldenrod;
+    border: gold;
+    font-weight: bold;
+    padding: 10px;
+    width: 40px;
+}

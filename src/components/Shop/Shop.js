@@ -6,9 +6,16 @@ import { addToDb, clearTheCart, getStoredCart } from '../../utilities/fakedb';
 import { Link, useLoaderData } from 'react-router-dom';
 
 
+
+
+
 const Shop = () => {
-    const products = useLoaderData();
+    const {products, count} = useLoaderData();
     const [cart, setCart] = useState([]);
+    const [page, setPage] = useState(0);
+    const [size, setSize] = useState(10);
+
+    const pages = Math.ceil(count / size);
 
     const clearCart = () =>{
         setCart([]);
@@ -20,7 +27,7 @@ const Shop = () => {
     //    console.log(storedCart);
     const savedCart = [];
        for(const id in storedCart){
-        const addedProduct = products.find(product => product.key === id);
+        const addedProduct = products.find(product => product._id === id);
         // console.log(addedProduct)
         if(addedProduct){
             const quantity = storedCart[id];
@@ -35,26 +42,26 @@ const Shop = () => {
     const handelAddToCart = selectedProduct =>{
         console.log(selectedProduct);
         let newCart = [];
-        const exists = cart.find(product => product.key === selectedProduct.key);
+        const exists = cart.find(product => product._id === selectedProduct._id);
         if(!exists){
             selectedProduct.quantity = 1;
             newCart = [...cart, selectedProduct];
 
         }
         else{
-            const rest = cart.filter(product => product.key !== selectedProduct.key)
+            const rest = cart.filter(product => product._id !== selectedProduct._id)
             exists.quantity = exists.quantity + 1;
             newCart = [...rest, exists];
         }
         setCart(newCart);
-        addToDb(selectedProduct.key);
+        addToDb(selectedProduct._id);
     }
     return (
         <div className='shop-container'>
             <div className="products-container">
                 {
                     products.map(product =><Product
-                    key={product.key}
+                    key={product._id}
                     product = {product}
                     handelAddToCart ={handelAddToCart}
                     ></Product>)
@@ -68,7 +75,18 @@ const Shop = () => {
                     </Link>
                 </Cart>
             </div>
+           <div className='pegination'>
+            <p>Current Page : {page}</p>
+           {
+                [...Array(pages).keys()].map(number=><button
+                key={number}
+                className={page === number && 'selected'}
+                onClick={()=>setPage(number)}
+                >{number}</button>)
+            }
+           </div>
         </div>
+        
     );
 };
 
